@@ -1,13 +1,13 @@
 # HTTP Server
 [server]
-	Address     = ":8199"
+	Address     = ":80"
 	ServerRoot  = "public"
-	ServerAgent = "gf-app"
-	LogPath     = "/tmp/log/gf-app/server"
+	ServerAgent = "myapp"
+	LogPath     = "./log/"
 
 # Logger.
 [logger]
-    Path        = "/tmp/log/gf-app"
+    Path        = "./log/"
     Level       = "all"
     Stdout      = true
 
@@ -19,10 +19,14 @@
 
 # Database.
 [database]
-    link  = "mysql:root:12345678@tcp(127.0.0.1:3306)/test"
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/myapp"
     debug = true
     # Database logger.
     [database.logger]
-        Path   = "/tmp/log/gf-app/sql"
+        Path   = "./log/"
         Level  = "all"
         Stdout = true
+
+# Redis数据库配置
+[redis]
+    default = "127.0.0.1:6379,0"

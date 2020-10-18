@@ -7,5 +7,8 @@ import (
 )
 
 func main() {
-	g.Server().Run()
+	server := g.Server()
+
+	server.SetAccessLogEnabled(true)
+	server.Run()
 }
