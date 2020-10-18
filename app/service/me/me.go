@@ -12,12 +12,27 @@ import (
 )
 
 const USER_INFO_P = "TOKEN:"
+const KEY = "token"
 
 type UserCache struct {
 	Id     int64
 	Name   string
 	Avatar string
 	Motto  string
+}
+
+/**
+检查缓存是否有
+*/
+func CheckLogin(token string) (bool, error) {
+	token = CovToken(token)
+	conn := g.Redis().Conn()
+	defer conn.Close()
+	reply, err := conn.DoVar("EXISTS", (token))
+	if err != nil {
+		return false, err
+	}
+	return reply.Bool(), nil
 }
 
 /**
@@ -40,12 +55,12 @@ func Login(name string, password string) (string, *me.Entity, error) {
 	// 缓存
 	conn := g.Redis().Conn()
 	defer conn.Close()
-	conn.DoVarWithTimeout(time.Hour, "SET", covToken(token), one)
+	conn.DoVarWithTimeout(time.Hour, "SET", CovToken(token), one)
 	return token, one, nil
 }
 
 func Detail(token string) (*me.Entity, error) {
-	token = covToken(token)
+	token = CovToken(token)
 	conn := g.Redis().Conn()
 	defer conn.Close()
 	reply, err := conn.DoVar("EXISTS", (token))
@@ -69,8 +84,20 @@ func Detail(token string) (*me.Entity, error) {
 	return me, nil
 }
 
-func Load() {
-
+func Load(token string) (*UserCache, error) {
+	token = CovToken(token)
+	conn := g.Redis().Conn()
+	defer conn.Close()
+	res, err := conn.DoVar("GET", token)
+	if err != nil {
+		return nil, err
+	}
+	var me *UserCache
+	err = res.Struct(&me)
+	if err != nil {
+		return nil, err
+	}
+	return me, nil
 }
 
 /**
@@ -81,6 +108,6 @@ func genToken() (string, error) {
 	return encryptString, e
 }
 
-func covToken(token string) string {
+func CovToken(token string) string {
 	return USER_INFO_P + token
 }
