@@ -1,4 +1,4 @@
-package authController
+package authCtl
 
 import (
 	"gf-app/app/service/meService"

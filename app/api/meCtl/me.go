@@ -1,4 +1,4 @@
-package meController
+package meCtl
 
 import (
 	"gf-app/app/api"

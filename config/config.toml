@@ -1,6 +1,6 @@
 # HTTP Server
 [server]
-	Address     = ":80"
+	Address     = ":8088"
 	ServerRoot  = "public"
 	ServerAgent = "myapp"
 	LogPath     = "./log/"
@@ -19,7 +19,7 @@
 
 # Database.
 [database]
-    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/myapp"
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/jie"
     debug = true
     # Database logger.
     [database.logger]
