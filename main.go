@@ -9,6 +9,7 @@ import (
 func main() {
 	server := g.Server()
 
+	server.SetClientMaxBodySize(1024 * 1024 * 64)
 	server.SetAccessLogEnabled(true)
 	server.Run()
 }
