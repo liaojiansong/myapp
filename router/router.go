@@ -2,6 +2,7 @@ package router
 
 import (
 	"gf-app/app/api"
+	"gf-app/app/api/articleCtl"
 	"gf-app/app/api/authCtl"
 	"gf-app/app/api/meCtl"
 	"gf-app/app/service/middleware"
@@ -18,15 +19,14 @@ func init() {
 	})
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.Auth)
-		me := &meCtl.Me{&api.Di{}}
+		d := &api.Di{}
+
+		me := &meCtl.Me{d}
 		group.ALL("/me", me)
-		//group.Group("/me", func(group *ghttp.RouterGroup) {
-		//	me := &meController.Me{&api.Di{}}
-		//	//group.POST("/login", me.Login)
-		//	//group.GET("/index", me.Index)
-		//	//group.GET("/update", me.Update)
-		//	//group.ALL()
-		//})
+
+		art := &articleCtl.Article{d}
+		group.ALL("/art", art)
+
 	})
 
 }

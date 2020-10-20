@@ -30,3 +30,7 @@
 # Redis数据库配置
 [redis]
     default = "127.0.0.1:6379,0"
+
+[weather]
+    url = "https://freecityid.market.alicloudapi.com/whapi/json/alicityweather/briefcondition"
+    appcode = "APPCODE 631827f85e1248a2bce7e7793226a0ca"
