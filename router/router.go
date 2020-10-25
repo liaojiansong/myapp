@@ -5,6 +5,7 @@ import (
 	"gf-app/app/api/articleCtl"
 	"gf-app/app/api/authCtl"
 	"gf-app/app/api/meCtl"
+	"gf-app/app/api/tagCtl"
 	"gf-app/app/service/middleware"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -26,6 +27,9 @@ func init() {
 
 		art := &articleCtl.Article{d}
 		group.ALL("/art", art)
+
+		tag := &tagCtl.Tag{d}
+		group.ALL("/tag", tag)
 
 	})
 
