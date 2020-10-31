@@ -5,3 +5,6 @@
 package meModel
 
 //在下面填写您的想法。
+func Alias(a string) string {
+	return Table + " " + a
+}

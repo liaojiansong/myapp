@@ -5,3 +5,6 @@
 package articleTagModel
 
 // Fill with you ideas below.
+func Alias(a string) string {
+	return Table + " " + a
+}

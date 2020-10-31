@@ -24,6 +24,19 @@ func (this *Tag) Index(r *ghttp.Request) {
 
 }
 
+func (this *Tag) Options(r *ghttp.Request) {
+	var data *tagService.OptionRequest
+	if err := r.Parse(&data); err != nil {
+		response.JsonExit(r, -1, err.Error())
+	}
+	optionResponse, err := tagService.Options(data)
+	if err != nil {
+		response.JsonExit(r, -1, err.Error())
+	}
+	response.JsonOk(r, optionResponse)
+
+}
+
 func (this *Tag) Create(r *ghttp.Request) {
 	var data *tagService.CreateRequest
 	e := r.Parse(&data)

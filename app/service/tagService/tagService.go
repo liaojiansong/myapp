@@ -3,6 +3,7 @@ package tagService
 import (
 	"errors"
 
+	"gf-app/app/model/articleTagModel"
 	"gf-app/app/model/tagModel"
 	"github.com/gogf/gf/os/glog"
 )
@@ -37,6 +38,23 @@ func Index(index *IndexRequest) (res *IndexResponse, err error) {
 		Count: count,
 	}, nil
 
+}
+
+type OptionRequest struct {
+	Keyword string
+}
+
+// 选项
+func Options(option *OptionRequest) (res []*tagModel.Entity, err error) {
+	model := tagModel.Model
+	if option.Keyword != "" {
+		model = model.Where("name like ?", "%"+option.Keyword+"%")
+	}
+	entities, err := model.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	return entities, nil
 }
 
 type CreateRequest struct {
@@ -132,7 +150,15 @@ func Delete(data *DeleteRequest) (ok bool, err error) {
 	if entity == nil {
 		return false, errors.New("data is not exist")
 	}
-	// todo 是否关联
+	// 是否关联
+	has, err := hasArt(data.Id)
+
+	if err != nil {
+		return false, err
+	}
+	if has == true {
+		return false, errors.New("已经关联文章,不能删除")
+	}
 	// 删除
 	result, err := entity.Delete()
 	if err != nil {
@@ -146,6 +172,18 @@ func Delete(data *DeleteRequest) (ok bool, err error) {
 		return false, errors.New("delete failed")
 	}
 	return true, nil
+}
+
+// 是否关联文章
+func hasArt(tagId int) (ok bool, err error) {
+	one, err := articleTagModel.Model.FindOne("tag_id = ?", tagId)
+	if err != nil {
+		return false, err
+	}
+	if one != nil {
+		return true, nil
+	}
+	return false, nil
 }
 
 // 检查名字
